@@ -116,7 +116,10 @@ def face_locations(img, number_of_times_to_upsample=1, model="hog"):
         return [_trim_css_to_bounds(_rect_to_css(face.rect), img.shape) for face in _raw_face_locations(img, number_of_times_to_upsample, "cnn")]
     else:
         return [_trim_css_to_bounds(_rect_to_css(face), img.shape) for face in _raw_face_locations(img, number_of_times_to_upsample, model)]
-
+    """
+    这个函数返回每一个识别后的人脸矩形框。
+    
+    """
 
 def _raw_face_locations_batched(images, number_of_times_to_upsample=1, batch_size=128):
     """
@@ -127,7 +130,7 @@ def _raw_face_locations_batched(images, number_of_times_to_upsample=1, batch_siz
     :return: A list of dlib 'rect' objects of found face locations
     """
     return cnn_face_detector(images, number_of_times_to_upsample, batch_size=batch_size)
-
+    
 
 def batch_face_locations(images, number_of_times_to_upsample=1, batch_size=128):
     """
