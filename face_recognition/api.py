@@ -11,6 +11,12 @@ except Exception:
     print("pip install git+https://github.com/ageitgey/face_recognition_models")
     quit()
 
+"""
+最核心的部分还是调用的库里的模型：
+dlib 中人脸识别的程序
+face_recognition_models 模块
+"""
+    
 face_detector = dlib.get_frontal_face_detector()
 
 predictor_68_point_model = face_recognition_models.pose_predictor_model_location()
@@ -21,6 +27,12 @@ pose_predictor_5_point = dlib.shape_predictor(predictor_5_point_model)
 
 cnn_face_detection_model = face_recognition_models.cnn_face_detector_model_location()
 cnn_face_detector = dlib.cnn_face_detection_model_v1(cnn_face_detection_model)
+
+"""
+dlib.cnn_face_detection_model_v1：只是说提供了一个框架，里面包含了对训练模型的各种支撑。
+cnn_face_detection_model：则是提供了一个训练模型，里面包含收敛函数、激活函数、传输函数、以及具体参数
+cnn_face_detector：是一个对象，将生成一个2d的list，其中的元素是矩形框
+"""
 
 face_recognition_model = face_recognition_models.face_recognition_model_location()
 face_encoder = dlib.face_recognition_model_v1(face_recognition_model)
@@ -95,6 +107,7 @@ def _raw_face_locations(img, number_of_times_to_upsample=1, model="hog"):
     :param model: Which face detection model to use. "hog" is less accurate but faster on CPUs. "cnn" is a more accurate
                   deep-learning model which is GPU/CUDA accelerated (if available). The default is "hog".
     :return: A list of dlib 'rect' objects of found face locations
+    返回一个矩阵，包含图像中每一个人脸边界框
     """
     if model == "cnn":
         return cnn_face_detector(img, number_of_times_to_upsample)
@@ -117,7 +130,7 @@ def face_locations(img, number_of_times_to_upsample=1, model="hog"):
     else:
         return [_trim_css_to_bounds(_rect_to_css(face), img.shape) for face in _raw_face_locations(img, number_of_times_to_upsample, model)]
     """
-    这个函数返回每一个识别后的人脸矩形框。
+    这个函数返回每一个识别后的人脸矩形框。//总是常见在 return 中使用各种函数、循环、调用等
     
     """
 
